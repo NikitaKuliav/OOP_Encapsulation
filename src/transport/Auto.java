@@ -1,81 +1,123 @@
 package transport;
 
 public class Auto {
-    final String brand;
-    final String model;
-    double engineVolume;
-    String color;
-    final int year;
-    final String country;
+    private final String brand;
+    private final String model;
+    private double engineVolume;
+    private String color;
+    private final int year;
+    private final String country;
 
-    String transmission;
-    final String bodyType;
-    int registrationNumber;
-    final int seatsCount;
-    Boolean tyre;
+    private String transmission;
+    private final String bodyType;
+    private int registrationNumber;
+    private final int seatsCount;
+    private Boolean summerTyres;
+    private Key key;
+    public static class Key {
+        private final boolean remoteEngineStart;
+        private final boolean keylessAccess;
 
-    public Auto(String brand, String model, double engineVolume, String color, int year, String country, String transmission, String bodyType, int registrationNumber, int seatsCount, Boolean tyre) {
+        public Key(boolean remoteEngineStart, boolean keylessAccess) {
+
+
+            this.remoteEngineStart = remoteEngineStart;
+            this.keylessAccess = keylessAccess;
+        }
+
+        public boolean isRemoteEngineStart() {
+            return remoteEngineStart;
+        }
+
+        public boolean isKeylessAccess() {
+            return keylessAccess;
+        }
+
+        @Override
+        public String toString() {
+            return (remoteEngineStart? "есть удалённый запуск двигателя" : "нет удалённого запуска двигателя") +
+                    (keylessAccess? "есть бесключевой доступ" : "нет бесключевого доступа");
+        }
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        if(key==null){
+            key = new Key(false, false);
+        }
+        this.key = key;
+    }
+
+    public Auto(String brand, String model, double engineVolume, String color, int year, String country, String transmission, String bodyType, int registrationNumber, int seatsCount, Boolean tyre, Key key) {
         if (brand == null || brand.equals("")) {
-            this.brand = "default";
-        } else {this.brand = brand;}
+            brand = "default";
+        }
+        this.brand = brand;
         if (model == null || model.equals("")) {
-            this.model = "default";
-        } else {this.model = model;}
+            model = "default";
+        }
+        this.model = model;
         if (engineVolume <= 0) {
-            this.engineVolume = 1.5;
-        } else {this.engineVolume = engineVolume;}
-        if (color == null || color.equals("")) {
-            this.color = "White";
-        } else {this.color = color;}
+            engineVolume = 1.5;
+        }
+
+        setEngineVolume(engineVolume);
+        setColor(color);
         if (year <= 0) {
-            this.year = 2000;
-        } else {this.year = year;}
+            year = 2000;
+        }
+        this.year = year;
 
         if (country == null || country.equals("")) {
-            this.country = "default";
-        } else {this.country = country;}
+            country = "default";
+        }
+        this.country = country;
 
-        if (transmission == null || transmission.equals("")) {
-            this.transmission = "default";
-        } else {this.transmission = transmission;}
+        setTransmission(transmission);
 
         if (bodyType == null || bodyType.equals("")) {
             this.bodyType = "default";
-        } else {this.bodyType = bodyType;}
-
-        if (registrationNumber <= 0){
-            this.registrationNumber = 10;
         } else {
-            this.registrationNumber = registrationNumber;
+            this.bodyType = bodyType;
         }
 
-        if (seatsCount <=0) {
+        if (registrationNumber <= 0) {
+            registrationNumber = 10;
+        }
+        this.registrationNumber = registrationNumber;
+
+
+        if (seatsCount <= 0) {
             this.seatsCount = 4;
         } else {
             this.seatsCount = seatsCount;
         }
 
-        if (tyre == null)
-        {this.tyre = false;
-        } else {this.tyre = tyre;
+        if (tyre == null) {
+            tyre = false;
         }
+        this.summerTyres = tyre;
+        setKey(key);
 
     }
 
     public void changeTyre(int month) {
         switch (month) {
-            case 1 -> this.tyre = false;
-            case 2 -> this.tyre = false;
-            case 3 -> this.tyre = true;
-            case 4 -> this.tyre = true;
-            case 5 -> this.tyre = true;
-            case 6 -> this.tyre = true;
-            case 7 -> this.tyre = true;
-            case 8 -> this.tyre = true;
-            case 9 -> this.tyre = true;
-            case 10 -> this.tyre = true;
-            case 11 -> this.tyre = true;
-            case 12 -> this.tyre = false;
+            case 1 -> this.summerTyres = false;
+            case 2 -> this.summerTyres = false;
+            case 3 -> this.summerTyres = true;
+            case 4 -> this.summerTyres = true;
+            case 5 -> this.summerTyres = true;
+            case 6 -> this.summerTyres = true;
+            case 7 -> this.summerTyres = true;
+            case 8 -> this.summerTyres = true;
+            case 9 -> this.summerTyres = true;
+            case 10 -> this.summerTyres = true;
+            case 11 -> this.summerTyres = true;
+            case 12 -> this.summerTyres = false;
         }
     }
 
@@ -92,6 +134,9 @@ public class Auto {
     }
 
     public void setEngineVolume(double engineVolume) {
+        if (engineVolume <= 0) {
+            engineVolume = 1.5;
+        }
         this.engineVolume = engineVolume;
     }
 
@@ -100,6 +145,9 @@ public class Auto {
     }
 
     public void setColor(String color) {
+        if (color == null || color.equals("")) {
+            color = "White";
+        }
         this.color = color;
     }
 
@@ -116,6 +164,9 @@ public class Auto {
     }
 
     public void setTransmission(String transmission) {
+        if (transmission == null || transmission.equals("")) {
+            transmission = "default";
+        }
         this.transmission = transmission;
     }
 
@@ -135,27 +186,30 @@ public class Auto {
         return seatsCount;
     }
 
-    public Boolean getTyre() {
-        return tyre;
+    public Boolean getSummerTyres() {
+        return summerTyres;
     }
 
-    public void setTyre(Boolean tyre) {
-        this.tyre = tyre;
+    public void setSummerTyres(Boolean summerTyres) {
+        this.summerTyres = summerTyres;
     }
 
     @Override
     public String toString() {
         return
                 "марка='" + brand + '\'' +
-                ", модель='" + model + '\'' +
-                ", объем двигателя=" + engineVolume +
-                ", цвет='" + color + '\'' +
-                ", год=" + year +
-                ", страна сборки='" + country + '\'' +
-                ", коробка передач='" + transmission + '\'' +
-                ", кузов='" + bodyType + '\'' +
-                ", регистрационный номер=" + registrationNumber +
-                ", количество сидений=" + seatsCount +
-                ", тип резины=" + tyre;
+                        ", модель='" + model + '\'' +
+                        ", объем двигателя=" + engineVolume +
+                        ", цвет='" + color + '\'' +
+                        ", год=" + year +
+                        ", страна сборки='" + country + '\'' +
+                        ", коробка передач='" + transmission + '\'' +
+                        ", кузов='" + bodyType + '\'' +
+                        ", регистрационный номер=" + registrationNumber +
+                        ", количество сидений=" + seatsCount +
+                        ", тип резины=" + (summerTyres ? "летняя" : "зимняя") +
+                        key;
     }
+
+
 }
